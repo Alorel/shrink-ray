@@ -69,23 +69,23 @@ function compression(options) {
   const zlibOpts     = opts.zlib || {};
   const zlibOptNames = ['flush', 'chunkSize', 'windowBits', 'level', 'memLevel', 'strategy', 'dictionary'];
   zlibOptNames.forEach(function (option) {
-    zlibOpts[option] = zlibOpts[option] || opts[option]
-  })
+    zlibOpts[option] = zlibOpts[option] || opts[option];
+  });
 
-  if (!opts.hasOwnProperty('cacheSize')) opts.cacheSize = '128mB'
-  var cache = opts.cacheSize ? createCache(bytes(opts.cacheSize.toString())) : null
+  if (!opts.hasOwnProperty('cacheSize')) opts.cacheSize = '128mB';
+  var cache = opts.cacheSize ? createCache(bytes(opts.cacheSize.toString())) : null;
 
-  var shouldCache = opts.cache || function () { return true }
+  var shouldCache = opts.cache || function () { return true };
 
   return function compression (req, res, next) {
-    var ended = false
-    var length
-    var listeners = []
-    var stream
+    var ended = false;
+    var length;
+    var listeners = [];
+    var stream;
 
-    var _end = res.end
-    var _on = res.on
-    var _write = res.write
+    var _end = res.end;
+    var _on = res.on;
+    var _write = res.write;
 
     // flush
     res.flush = function flush() {
