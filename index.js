@@ -75,16 +75,16 @@ function compression(options) {
   if (!opts.hasOwnProperty('cacheSize')) opts.cacheSize = '128mB';
   const cache = opts.cacheSize ? createCache(bytes(opts.cacheSize.toString())) : null;
 
-  const shouldCache = opts.cache || function () { return true };
+  const shouldCache = opts.cache || function () { return true; };
 
-  return function compression (req, res, next) {
-    let ended = false;
+  return function compression(req, res, next) {
+    let ended     = false;
     let length;
     let listeners = [];
     let stream;
 
-    const _end = res.end;
-    const _on = res.on;
+    const _end   = res.end;
+    const _on    = res.on;
     const _write = res.write;
 
     // flush
