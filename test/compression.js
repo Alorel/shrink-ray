@@ -936,7 +936,7 @@ describe('compression()', function () {
           assert.equal(chunks, 20);
           done();
         });
-      });
+      })
       .end();
     });
   });
