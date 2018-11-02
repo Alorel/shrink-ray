@@ -814,8 +814,7 @@ describe('compression()', function () {
             done();
           });
         })
-      })
-      .end();
+        .end();
     });
 
     it('should flush the response for brotli', function (done) {
@@ -935,9 +934,8 @@ describe('compression()', function () {
             assert.equal(chunks, 20);
             done();
           });
-        });
-      })
-      .end();
+        })
+        .end();
     });
   });
 });
