@@ -232,8 +232,8 @@ function compression(options) {
         debug('%s compression', method);
         switch (method) {
           case 'br':
-            stream = iltorb.compressStream(brotliOpts)
-            break
+            stream = iltorb.compressStream(brotliOpts);
+            break;
           case 'gzip':
             stream = zlib.createGzip(zlibOpts);
             break;
