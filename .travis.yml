@@ -1,29 +1,33 @@
-env:
-  - CXX=g++-5
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-5
 language: node_js
-node_js:
-  - "4.4"
-  - "5.11"
-  - 6
-  - 7
 sudo: false
+node_js:
+- stable
+- lts/dubnium
+- lts/boron
+
 cache:
   directories:
-    - node_modules
-before_install:
-  # Update Node.js modules
-  - "test ! -d node_modules || npm prune"
-  - "test ! -d node_modules || npm rebuild"
-script:
-  # Run test script, depending on istanbul install
-  - "test ! -z $(npm -ps ls istanbul) || npm test"
-  - "test   -z $(npm -ps ls istanbul) || npm run-script test-travis"
-  - "test   -z $(npm -ps ls eslint  ) || npm run-script lint"
-after_script:
-  - "test -e ./coverage/lcov.info && npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
+  - node_modules
+before_cache: rm -rf node_modules/.cache
+install: npm install --build-from-source
+after_success: cat ./coverage/lcov.info | coveralls
+
+stages:
+- test
+- name: Deploy
+  if: tag IS present
+
+jobs:
+  include:
+  - stage: Deploy
+    node_js: stable
+    script: node ./prepublish.js
+    after_success: false
+    deploy:
+    - provider: npm
+      skip_cleanup: true
+      on:
+        tags: true
+      email: a.molcanovas@gmail.com
+      api_key:
+        secure: iSr5sIvDsSP3c+55Wa91G3a3WXkb8Eb9iGc6wontJDZQx7PZ+xYHFFYEAQkK6LYw08i0eik/2xTdt76djb1jySOi/OlvAQIGsf/GPcTG0qRcRvW/rR6CM7yX36xQ9pWUn/PEuDHSmzBnKVHHrhbYR66olUrOBu7GcgTJoLDj0ppFSbtUMqqFCM8bNQs8d3gMgwF96+7jpzjHbFDVrB+jMN8qNZF29RO+Xqv9oaPSQyY2o7IJUwsbVGUs6g6EpnNlj4p7MfzBmhoNLikY73UtW2teLyobDTf8Qv0+PwuRq1WwB8UhlgSlqQ+TWaFcywqmhiZIm30fu69M1qfkuO6N51jIuvq19qCZekcl02vS5kUs0VnbOozp+5BuQNdEzkbmrQrtDkGXaI86ZVr7MUGfFZqPQlEcIoOQyRT6cA8BtZ4SrhCS73xLbFoHcLhbXR7i3gpNQK1Ap5YMnlwQS+z4e5NI6h/VQ+8GRXuVCTclAuJdpXkJWGuoOMfLK0keCkO1iqETW4Iv7t58tjJXiwfU8VBgxd/8bI5lyVoy9VpBoptaDjfWJpfaSskXjxTv+RVVmwhjr44wngvvNid93q0hB7+AFhr4kR52fQ8vXtZtfM3fdTUy036IUo/omQzXKV7EyL/QFkI62a4EDJAFWpuZOO+wtlCaijbcadTrtIV5wJk=

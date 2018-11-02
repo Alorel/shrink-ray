@@ -1,14 +1,21 @@
 {
-  "name": "shrink-ray",
+  "name": "shrink-ray-current",
   "description": "Node.js compression middleware with brotli and zopfli support",
-  "version": "0.1.4",
+  "version": "3.0.0",
   "contributors": [
+    "Arturas Molcanovas <a.molcanovas@gmail.com> (https://alorel.github.io)",
     "Douglas Christopher Wilson <doug@somethingdoug.com>",
     "Jonathan Ong <me@jongleberry.com> (http://jongleberry.com)",
     "Sasha Aickin"
   ],
   "license": "MIT",
-  "repository": "aickin/compression",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alorel/shrink-ray.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Alorel/shrink-ray/issues"
+  },
   "keywords": [
     "compression",
     "gzip",
@@ -22,40 +29,34 @@
     "content-encoding"
   ],
   "dependencies": {
-    "accepts": "1.3.3",
-    "bytes": "2.5.0",
-    "compressible": "2.0.10",
-    "debug": "2.6.3",
-    "iltorb": "2.0.2",
-    "lru-cache": "4.0.2",
-    "multipipe": "1.0.2",
-    "node-zopfli": "2.0.2",
-    "on-headers": "1.0.1",
-    "stream-buffers": "3.0.1",
-    "vary": "1.1.1"
+    "@types/express": "*",
+    "@types/iltorb": "*",
+    "@types/node": "*",
+    "accepts": "^1.3.0",
+    "bytes": "^3.0.0",
+    "compressible": "^2.0.0",
+    "debug": "^4.0.0",
+    "iltorb": "^2.0.0",
+    "lru-cache": "^4.0.0",
+    "multipipe": "^2.0.0",
+    "node-zopfli-es": "^1.0.0",
+    "on-headers": "^1.0.0",
+    "stream-buffers": "^3.0.0",
+    "vary": "^1.1.0"
   },
   "devDependencies": {
-    "eslint": "2.9.0",
-    "eslint-config-standard": "5.3.1",
-    "eslint-plugin-promise": "1.1.0",
-    "eslint-plugin-standard": "1.3.2",
-    "expect": "1.20.2",
-    "istanbul": "0.4.5",
-    "mocha": "3.2.0",
-    "supertest": "3.0.0"
+    "coveralls": "^3.0.0",
+    "expect": "^23.0.0",
+    "mocha": "^5.0.0",
+    "nyc": "^13.1.0",
+    "supertest": "^3.0.0"
   },
-  "files": [
-    "LICENSE",
-    "HISTORY.md",
-    "index.js"
-  ],
   "engines": {
-    "node": ">= 4.2.0"
+    "node": ">=8.0"
   },
   "scripts": {
-    "lint": "eslint **/*.js",
-    "test": "mocha --check-leaks --reporter spec --bail",
-    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --check-leaks --reporter dot",
-    "test-travis": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --check-leaks --reporter spec"
+    "reinstall": "rm -rf node_modules package-lock.json && npm install",
+    "test": "nyc mocha --check-leaks --bail",
+    "version-readme": "node ./prepublish.js"
   }
 }
