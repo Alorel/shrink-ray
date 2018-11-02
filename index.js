@@ -73,19 +73,19 @@ function compression(options) {
   });
 
   if (!opts.hasOwnProperty('cacheSize')) opts.cacheSize = '128mB';
-  var cache = opts.cacheSize ? createCache(bytes(opts.cacheSize.toString())) : null;
+  const cache = opts.cacheSize ? createCache(bytes(opts.cacheSize.toString())) : null;
 
-  var shouldCache = opts.cache || function () { return true };
+  const shouldCache = opts.cache || function () { return true };
 
   return function compression (req, res, next) {
-    var ended = false;
-    var length;
-    var listeners = [];
-    var stream;
+    let ended = false;
+    let length;
+    let listeners = [];
+    let stream;
 
-    var _end = res.end;
-    var _on = res.on;
-    var _write = res.write;
+    const _end = res.end;
+    const _on = res.on;
+    const _write = res.write;
 
     // flush
     res.flush = function flush() {
