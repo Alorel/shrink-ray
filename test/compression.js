@@ -531,7 +531,7 @@ describe('compression()', function () {
       const stream = new streamBuffers.WritableStreamBuffer();
       
       brotliRequest(server)
-      .pipe(stream)
+        .pipe(stream)
         .on('finish', function () {
           // check to make sure that the response buffer is byte-for-byte equivalent to calling
           // brotli directly with the same quality parameter.
@@ -938,14 +938,6 @@ describe('compression()', function () {
         });
       });
       .end();
-    });
-  });
-});
-
-function createServer (opts, fn) {
-  var _compression = compression(opts)
-  return http.createServer(function (req, res) {
-        .end();
     });
   });
 });
