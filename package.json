@@ -38,7 +38,7 @@
     "compressible": "^2.0.0",
     "debug": "^4.0.0",
     "iltorb": "^2.0.0",
-    "lru-cache": "^4.0.0",
+    "lru-cache": "^5.0.0",
     "multipipe": "^2.0.0",
     "node-zopfli-es": "^1.0.0",
     "on-headers": "^1.0.0",
