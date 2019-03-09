@@ -50,7 +50,7 @@
     "expect": "^24.1.0",
     "mocha": "^6.0.0",
     "nyc": "^13.1.0",
-    "supertest": "^3.0.0"
+    "supertest": "^4.0.0"
   },
   "engines": {
     "node": ">=8.0"
