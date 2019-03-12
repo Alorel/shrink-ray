@@ -277,9 +277,6 @@ function shouldCompress(req, res) {
 This module adds a `res.flush()` method to force the partially-compressed
 response to be flushed to the client.
 
-Note that brotli does not currently support `flush`, so it is a no-op when using
-brotli compression.
-
 # Examples
 
 ## express/connect
@@ -307,9 +304,6 @@ events, there are certain block of data that need to reach the client.
 
 You can achieve this by calling `res.flush()` when you need the data written to
 actually make it to the client.
-
-(Note that since brotli does not support `flush`, brotli will never be used as
-compression for server-sent events.)
 
 ```js
 const shrinkRay = require('shrink-ray-current');
