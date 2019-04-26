@@ -40,7 +40,7 @@
     "iltorb": "^2.0.0",
     "lru-cache": "^5.1.1",
     "multipipe": "^3.0.0",
-    "node-zopfli-es": "^1.0.1",
+    "node-zopfli-es": "^1.0.2",
     "on-headers": "^1.0.0",
     "stream-buffers": "^3.0.0",
     "vary": "^1.1.0"
