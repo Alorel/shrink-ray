@@ -37,10 +37,8 @@
     "bytes": "^3.0.0",
     "compressible": "^2.0.0",
     "debug": "^4.0.0",
-    "iltorb": "^2.0.0",
     "lru-cache": "^5.1.1",
     "multipipe": "^3.0.0",
-    "node-zopfli-es": "^1.0.1",
     "on-headers": "^1.0.0",
     "stream-buffers": "^3.0.0",
     "vary": "^1.1.0"
@@ -48,9 +46,16 @@
   "devDependencies": {
     "coveralls": "^3.0.0",
     "expect": "^24.1.0",
-    "mocha": "^6.0.0",
+    "iltorb": "^2.0.0",
+    "mocha": "^6.1.4",
+    "node-zopfli-es": "^1.0.3",
     "nyc": "^14.0.0",
+    "proxyquire": "^2.1.0",
     "supertest": "^4.0.0"
+  },
+  "peerDependencies": {
+    "iltorb": "^2.0.0",
+    "node-zopfli-es": "^1.0.3"
   },
   "engines": {
     "node": ">=8.0"

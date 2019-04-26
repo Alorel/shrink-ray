@@ -15,7 +15,6 @@ const bytes        = require('bytes');
 const compressible = require('compressible');
 const debug        = require('debug')('compression');
 const Duplex       = require('stream').Duplex;
-const iltorb       = require('iltorb');
 const lruCache     = require('lru-cache');
 const multipipe    = require('multipipe');
 const onHeaders    = require('on-headers');
@@ -24,7 +23,24 @@ const util         = require('util');
 const vary         = require('vary');
 const Writable     = require('stream').Writable;
 const zlib         = require('zlib');
-const zopfli       = require('node-zopfli-es');
+
+/**
+ * Optional dependencies handling. If some binary dependencies cannot build in
+ * this environment, or are incompatible with this version of Node, the rest of
+ * the module should work!
+ * Known dependency issues: 
+ *  - node-zopfli-es is not be compatible with Node <8.11.
+ *  - iltorb is not required for Node >= 11.8, whose zlib has brotli built in.
+ */
+
+ const brotliCompat = require('./brotli-compat');
+ const zopfliCompat = require('./zopfli-compat');
+ 
+ // These are factory functions because they dynamically require dependencies
+ // and may log errors.
+ // They need to be tested, so they shouldn't have side effects on load.
+ const brotli = brotliCompat();
+ const zopfli = zopfliCompat();
 
 /**
  * Module exports.
@@ -206,7 +222,9 @@ function compression(options) {
       // instead enforce server preference. also, server-sent events (mime type of
       // text/event-stream) require flush functionality, so skip brotli in that
       // case.
-      const method = (contentType !== 'text/event-stream' && accept.encoding('br')) ||
+      // lastly, if brotli is unavailable or unsupported on this platform,
+      // the object will be falsy.
+      const method = (brotli && contentType !== 'text/event-stream' && accept.encoding('br')) ||
                      accept.encoding('gzip') ||
                      accept.encoding('deflate') ||
                      accept.encoding('identity');
@@ -236,7 +254,7 @@ function compression(options) {
         debug('%s compression', method);
         switch (method) {
           case 'br':
-            stream = iltorb.compressStream(brotliOpts);
+            stream = brotli.compressStream(brotliOpts);
             break;
           case 'gzip':
             stream = zlib.createGzip(zlibOpts);
@@ -474,7 +492,8 @@ BufferDuplex.prototype._write = function (chunk, encoding, callback) {
 function getBestQualityReencoder(coding) {
   switch (coding) {
     case 'gzip':
-      return multipipe(zlib.createGunzip(), zopfli.createGzip());
+      const zipStream = zopfli ? zopfli.createGzip() : zlib.createGzip();
+      return multipipe(zlib.createGunzip(), zipStream);
     case 'deflate':
       // for some reason, re-encoding with deflate makes some tests fail on
       // the travis machines. until we can figure this out, just offer a passthrough,
@@ -483,6 +502,6 @@ function getBestQualityReencoder(coding) {
       const PassThrough = require('stream').PassThrough;
       return new PassThrough();
     case 'br':
-      return multipipe(iltorb.decompressStream(), iltorb.compressStream());
+      return multipipe(brotli.decompressStream(), brotli.compressStream());
   }
 }
