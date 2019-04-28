@@ -73,6 +73,36 @@ toolchain](https://github.com/nodejs/node-gyp#installation).
 npm install shrink-ray-current
 ```
 
+## Peer Dependencies
+
+The brotli and zopfli algorithms rely on Node modules with native bindings.
+Some environments may not be able to build these dependencies, but
+`shrink-ray` tries to run even when they are absent; it just falls back to
+gzip.
+
+Therefore, the `iltorb` and `node-zopfli-es` modules are listed as
+`peerDependencies` in `package.json`. This is for two reasons:
+
+- `shrink-ray` will install successfully without them and fall back to gzip
+- Projects using `shrink-ray` can specify their own version ranges of these
+  dependencies for maximum control
+
+Add them manually to your `package.json` as `optionalDependencies`:
+
+```js
+"optionalDependencies": {
+  "iltorb": "~2.0.0",
+  "node-zopfli-es": "~1.0.3"
+}
+```
+
+Then, run `npm install` again.
+
+_(Node `>=11.8` has Brotli compression built in, but `shrink-ray` supports
+prior versions of Node as well. If your version of Node is `>=11.8`, the
+`iltorb` module is not necessary at runtime; however, you'll still see a
+warning at install time.)_
+
 # API
 
 ```js

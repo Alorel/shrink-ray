@@ -29,7 +29,7 @@ const zlib         = require('zlib');
  * this environment, or are incompatible with this version of Node, the rest of
  * the module should work!
  * Known dependency issues: 
- *  - node-zopfli-es is not be compatible with Node <8.11.
+ *  - node-zopfli-es is not compatible with Node <8.11.
  *  - iltorb is not required for Node >= 11.8, whose zlib has brotli built in.
  */
 
@@ -492,6 +492,7 @@ BufferDuplex.prototype._write = function (chunk, encoding, callback) {
 function getBestQualityReencoder(coding) {
   switch (coding) {
     case 'gzip':
+      // If zopfli is unavailable, fall back to gzip.
       const zipStream = zopfli ? zopfli.createGzip() : zlib.createGzip();
       return multipipe(zlib.createGunzip(), zipStream);
     case 'deflate':

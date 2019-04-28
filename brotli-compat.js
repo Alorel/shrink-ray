@@ -42,6 +42,8 @@ function getBrotliModule() {
     };
 
   }
+  
+  // If we get here, then our NodeJS does not support brotli natively.
   try {
     return require('iltorb');
   } catch (e) {
@@ -53,5 +55,8 @@ function getBrotliModule() {
       }
     );
   }
+  
+  // Return a signal value instead of throwing an exception, so the code in the
+  // index file doesn't have to try/catch again.
   return false;
 }
