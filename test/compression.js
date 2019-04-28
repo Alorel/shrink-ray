@@ -1029,10 +1029,12 @@ describe('compat factory for', function () {
     });
 
     it('returns false if zopfli does not', function () {
+      const mockZlib = {};
       const zopfliCompat = proxyquire.noCallThru().load('../zopfli-compat', {
-        'node-zopfli-es': null
+        'node-zopfli-es': null,
+        zlib: mockZlib
       });
-      assert.equal(zopfliCompat(), false);
+      assert.equal(zopfliCompat(), mockZlib);
     })
   });
 });

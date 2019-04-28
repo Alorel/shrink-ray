@@ -492,9 +492,7 @@ BufferDuplex.prototype._write = function (chunk, encoding, callback) {
 function getBestQualityReencoder(coding) {
   switch (coding) {
     case 'gzip':
-      // If zopfli is unavailable, fall back to gzip.
-      const zipStream = zopfli ? zopfli.createGzip() : zlib.createGzip();
-      return multipipe(zlib.createGunzip(), zipStream);
+      return multipipe(zlib.createGunzip(), zopfli.createGzip());
     case 'deflate':
       // for some reason, re-encoding with deflate makes some tests fail on
       // the travis machines. until we can figure this out, just offer a passthrough,
