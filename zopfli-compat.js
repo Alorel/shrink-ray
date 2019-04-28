@@ -4,10 +4,12 @@ function getZopfliModule() {
     try {
       return require('node-zopfli-es');
     } catch (e) {
-      console.warn(
-        `Cannot use zopfli compression:
-        "require('node-zopfli-es')" threw this error:`,
-        e
+      process.emitWarning('Module "node-zopfli-es" was unavailable',
+        {
+          type: 'MISSING_MODULE',
+          code: 'ZOPFLI_COMPAT',
+          detail: 'Zopfli compression unavailable; will fall back to gzip.'
+        }
       );
     }
   return false;

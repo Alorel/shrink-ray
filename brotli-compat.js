@@ -45,11 +45,12 @@ function getBrotliModule() {
   try {
     return require('iltorb');
   } catch (e) {
-    console.warn(
-      `Cannot use brotli compression:
-      Node ${process.version} does not have Brotli built in.
-      Substitute "require('iltorb')" threw this error:`,
-      e
+    process.emitWarning('Module "iltorb" was unavailable.',
+      {
+        type: 'MISSING_MODULE',
+        code: 'BROTLI_COMPAT',
+        detail: 'Brotli compression unavailable; will fall back to gzip.'
+      }
     );
   }
   return false;
