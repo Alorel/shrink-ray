@@ -11,7 +11,7 @@ interface Filterable {
    * The default filter function uses the compressible module to determine if
    * res.getHeader('Content-Type') is compressible.
    */
-  filter(req: Request, res: Response): boolean;
+  filter?(req: Request, res: Response): boolean;
 }
 
 interface ShrinkRayOptions extends Filterable {
