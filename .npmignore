@@ -1,8 +1,9 @@
 /coverage/
 /benchmark/
 /test/
-/.nycrc
+/.nycrc.yml
 /.nyc_output
-/.travis.yml
 /*.tgz
-/.idea
+/.github/
+/.gitattributes
+/.releaserc.js
